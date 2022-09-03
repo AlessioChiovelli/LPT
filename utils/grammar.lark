@@ -1,0 +1,40 @@
+?operations: (assignment_var)+ (composed_condition)* (simple_condition)*
+        
+        condition: composed_condition | simple_condition
+        
+        composed_condition: if_block "else" simple_condition
+
+        simple_condition: if_block (else_block)?
+
+        if_block: "if" conditional_blocks operator_block -> if_block
+
+        else_block: "else" operator_block -> else_block
+        
+        ?assignment_var: assignment_with_number|assignment_without_number
+
+        assignment_with_number : VARIABLES "=" NUMBER ";" -> assignment_with_number
+
+        assignment_without_number : VARIABLES ";"  -> assignment_without_number
+
+        ?operator_block: "{" VARIABLE_Z "=" NUMBER ";}" -> assignment_z_with_number
+                        |  "{" VARIABLE_Z ";}" -> assignment_z_without_number
+        
+        VARIABLES: "x"|"y"
+
+        VARIABLE_Z: "z"
+        
+        conditional_blocks: "(" VARIABLES "<" NUMBER ")" -> minor_of_const
+                          |"(" VARIABLES "<" VARIABLES ")" -> minor_of_variable
+                          |"(" VARIABLES "!=" NUMBER ")" -> different_of_const
+                          |"(" VARIABLES "!=" VARIABLES ")" -> different_of_variminor_of_variable
+                          |"(" VARIABLES ">" NUMBER ")" -> major_of_const
+                          |"(" VARIABLES ">" VARIABLES ")" -> major_of_variminor_of_variable
+                          |"(" VARIABLES "==" NUMBER ")" ->  equal_of_const
+                          |"(" VARIABLES "==" VARIABLES ")" -> equal_of_variminor_of_variable
+                    
+        
+        
+        %import common.ESCAPED_STRING
+        %import common.NUMBER
+        %import common.WS_INLINE
+        %ignore WS_INLINE
