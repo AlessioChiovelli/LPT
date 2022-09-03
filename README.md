@@ -1,2 +1,2 @@
 # LPT
-Language processing technologies exam's projects
+Language processing technologies exam's project #1
